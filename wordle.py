@@ -1,5 +1,12 @@
 # Wordle functions
 
+from random import randrange
+from string import *
+import os
+
+os.chdir("C:/Users/User/Desktop/CPH/CS 232 - Python/Wordle")
+words_5_Letters = "5letterwords.txt"
+
 
 # getWord: int -> string
 # purpose: gets a random word from the list
@@ -19,14 +26,15 @@ def displayKeyboard(keys):
     pass
 
 
-# displayGrid: list, int -> void
+# displayGrid: list -> void
 # purpose: takes in a list of the words that
 #     have been guessed (which is empty at the
 #     beginning of a new game) and prints them
 #     to the screen.
 
 def displayGrid(guesses, maxGuess):
-    pass
+    for line in guesses:
+        print line
 
 
 # storeGuesse: list, string -> void
@@ -59,5 +67,12 @@ def isGuessValid():
     # of valid words)
     pass
 
+def emptyRow():
+    the_row = []
+    the_row.append("+---+---+---+---+---+")
+    the_row.append("|   |   |   |   |   |")
+    the_row.append("+---+---+---+---+---+")
+
+    return the_row
 
     
