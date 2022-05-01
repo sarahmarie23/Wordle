@@ -5,7 +5,18 @@ from string import *
 import os
 
 os.chdir("C:/Users/User/Desktop/CPH/CS 232 - Python/Wordle")
-words_5_Letters = "5letterwords.txt"
+words_5_letters = "5letterwords.txt"
+valid_words = "validwords.txt"
+
+secret_word = "panda"
+global guesses
+guesses = []
+global maxGuesses
+maxGuesses = 6
+global currentGuesses
+currentGuesses = 0
+global wordLength
+wordLength = 5
 
 
 # getWord: int -> string
@@ -14,7 +25,11 @@ words_5_Letters = "5letterwords.txt"
 #     it for gameplay.
 
 def getWord(length):
-    pass
+    file = open(words_5_letters, "rt")
+    line = file.readline()
+    wordlist = line.split
+
+    chosen_word = wordlist[randrange(0, len(wordList))]
 
 
 # displayKeyboard: dict -> void
@@ -32,18 +47,31 @@ def displayKeyboard(keys):
 #     beginning of a new game) and prints them
 #     to the screen.
 
-def displayGrid(guesses, maxGuess):
-    for line in guesses:
-        print line
+def displayGrid():
+    for line in range(len(guesses)):
+        print(guesses[line])
 
 
-# storeGuesse: list, string -> void
-# purpose: takes in the current list of guesses
-#     and the string of the current guess and
-#     adds it to the list.
+# storeGuesse: list -> null
+# purpose: takes in the current guess in a list
+#     that consists of lists of letters and 
+#     colors and converts it into 3 strings
+#     that will print nicely. The 3 strings
+#     get added to the global guesses list.
 
-def storeGuesses(guesses, currGuess):
-    guesses.append(currGuess)
+def storeGuesses(guess_list):
+    plus = ["+"]
+    border = [text for pair in guess_list for text in pair if len(text) > 1 ]
+    pb = plus + border
+    borderFinal = "".join([str(text) for text in pb])
+
+    word = [char for pair in guess_list for char in pair if len(char) == 1]
+    wordStr = " | ".join([str(char) for char in word])
+    wordFinal = "| " + wordStr + " |"
+    
+    guesses.append(borderFinal)
+    guesses.append(wordFinal)
+    guesses.append(borderFinal)
 
 
 # isCorrectGuess: string -> bool
@@ -52,7 +80,9 @@ def storeGuesses(guesses, currGuess):
 #     guess, false otherwise.
 
 def isCorrectGuess(currGuess):
-    pass
+    
+    if currGuess == secret_word:
+        return True
 
 
 # def isGuessValid: string -> bool
@@ -60,12 +90,22 @@ def isCorrectGuess(currGuess):
 #     returns true if it is valid, false
 #     if it is not.
 
-def isGuessValid():
+def isGuessValid(guess):
     # guess is valid if it is exactly
     # the length of wordLength, and it is
     # a valid word (it appears on the list
     # of valid words)
-    pass
+
+    if len(guess) is not wordLength:
+        return "Guess must be {} letters long!".format(wordLength)
+    
+    file = open(valid_words)
+    checklist = file.read()
+    if guess not in checklist:
+        return "Not a valid word!"
+    file.close()
+
+    return True
 
 def emptyRow():
     the_row = []
@@ -75,4 +115,27 @@ def emptyRow():
 
     return the_row
 
+
+def analyzeGuess(guess):
+    guess_list = [[char, "---+"] for char in guess]
+    
+    for i in range(0, len(guess)):
+        if guess_list[i][0] is secret_word[i]:
+            guess_list[i][1] = "###+"
+            
+        check_index = guess.find(secret_word[i])
+        if check_index > -1 and guess_list[check_index][1] == "---+":
+            guess_list[check_index][1] = "===+"
+            
+    storeGuesses(guess_list)
+
+
+def gameOver():
+    # display their stats (guess distribution, win percent)
+    # ask if they want to play again
+    # if so, activate playWordle()
+
+    guesses.clear()
+
+        
     
