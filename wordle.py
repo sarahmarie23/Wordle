@@ -8,29 +8,28 @@ os.chdir("C:/Users/User/Desktop/CPH/CS 232 - Python/Wordle")
 words_5_letters = "5letterwords.txt"
 valid_words = "validwords.txt"
 
-secret_word = "panda"
-global guesses
+global secret_word
+
 guesses = []
-global maxGuesses
 maxGuesses = 6
-global currentGuesses
 currentGuesses = 0
-global wordLength
 wordLength = 5
+playAgain = False
 
-
-# getWord: int -> string
+# getWord: void -> void
 # purpose: gets a random word from the list
 #     of words (from a .txt file) and returns
 #     it for gameplay.
 
-def getWord(length):
+def getWord():
     file = open(words_5_letters, "rt")
-    line = file.readline()
-    wordlist = line.split
+    line = file.read()
+    wordlist = line.split()
+    #randWord = wordlist[randrange(0, len(wordlist))]
+    
+    return wordlist[randrange(0, len(wordlist))]
 
-    chosen_word = wordlist[randrange(0, len(wordList))]
-
+secret_word = getWord()
 
 # displayKeyboard: dict -> void
 # purpose: takes in a dictionary of (char, color)
@@ -82,7 +81,10 @@ def storeGuesses(guess_list):
 def isCorrectGuess(currGuess):
     
     if currGuess == secret_word:
+        gameWon = True
         return True
+    else:
+        return False
 
 
 # def isGuessValid: string -> bool
@@ -136,6 +138,14 @@ def gameOver():
     # if so, activate playWordle()
 
     guesses.clear()
+    currentGuesses = 0
+    replay = input("Play again? y/n ")
+    if replay == "y":
+        playAgain = True
+    else:
+        print("Thanks for playing!")
 
-        
+
+def clearConsole():
+    print("\n" * 45)  
     
