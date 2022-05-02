@@ -2,33 +2,47 @@ import wordle as w
 
 
 
+
 def playWordle():
+
     currentGuesses = 0
     secret_word = w.getWord()
     gameWon = False
     
-    while (currentGuesses < 6 and not gameWon):
+    while (w.currentGuesses < 6 and not gameWon):
+        w.displayGrid()
+        w.displayKeyboard()
+        guess = input("\n\t   Guess a word: ")
         
-        guess = input("Guess a word: ")
 
         while(w.isGuessValid(guess) is not True):
+            w.clearConsole()
+            w.displayGrid()
+            w.displayKeyboard()
             print(w.isGuessValid(guess))
-            guess = input("Guess a word: ")
+            guess = input("\t   Guess a word: ")
 
         w.clearConsole()
             
         w.analyzeGuess(guess)
-        w.displayGrid()
+        #w.displayGrid()
         gameWon = w.isCorrectGuess(guess)
 
-        currentGuesses +=1
-        
+        w.currentGuesses +=1
+
+    w.displayGrid()
+    w.displayKeyboard()    
         
     if gameWon:
-        print("You win!")
+        print("\nYou win!")
     else:
-        print("Sorry, the answer was: ", w.secret_word)
+        print("\nSorry, the answer was: ", w.secret_word)
 
-    w.gameOver()
-    if w.playAgain:
+    replay = w.gameOver()
+    if replay:
+        w.reset()
         playWordle()
+
+    
+    
+    

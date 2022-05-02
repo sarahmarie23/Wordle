@@ -8,13 +8,21 @@ os.chdir("C:/Users/User/Desktop/CPH/CS 232 - Python/Wordle")
 words_5_letters = "5letterwords.txt"
 valid_words = "validwords.txt"
 
-global secret_word
+
 
 guesses = []
 maxGuesses = 6
 currentGuesses = 0
 wordLength = 5
 playAgain = False
+
+
+keyboard = {'q':'[q]', 'w':'[w]', 'e':'[e]', 'r':'[r]', 't':'[t]',
+            'y':'[y]', 'u':'[u]', 'i':'[i]', 'o':'[o]', 'p':'[p]',
+            '2':'', 'a':'[a]', 's':'[s]', 'd':'[d]', 'f':'[f]',
+            'g':'[g]','h':'[h]', 'j':'[j]', 'k':'[k]', 'l':'[l]',
+            '3':'  ', 'z':'[z]', 'x':'[x]', 'c':'[c]', 'v':'[v]',
+            'b':'[b]', 'n':'[n]','m':'[m]'}
 
 # getWord: void -> void
 # purpose: gets a random word from the list
@@ -36,8 +44,12 @@ secret_word = getWord()
 # and prints to the screen the corresponding
 # keys in the correct colors.
 
-def displayKeyboard(keys):
-    pass
+def displayKeyboard():
+    
+    for k, v in keyboard.items():
+        print(v, end =" ")
+        if k in ['p', 'l']:
+            print('\n')
 
 
 # displayGrid: list -> void
@@ -48,8 +60,11 @@ def displayKeyboard(keys):
 
 def displayGrid():
     for line in range(len(guesses)):
+        print("         ", end = "")
         print(guesses[line])
-
+    for i in range(0, maxGuesses-currentGuesses):
+        emptyRow()
+    
 
 # storeGuesse: list -> null
 # purpose: takes in the current guess in a list
@@ -99,23 +114,23 @@ def isGuessValid(guess):
     # of valid words)
 
     if len(guess) is not wordLength:
-        return "Guess must be {} letters long!".format(wordLength)
+        return "\n   Guess must be {} letters long!".format(wordLength)
     
     file = open(valid_words)
     checklist = file.read()
     if guess not in checklist:
-        return "Not a valid word!"
+        return "\n\tNot a valid word!"
     file.close()
 
     return True
 
 def emptyRow():
-    the_row = []
-    the_row.append("+---+---+---+---+---+")
-    the_row.append("|   |   |   |   |   |")
-    the_row.append("+---+---+---+---+---+")
 
-    return the_row
+    print("         +---+---+---+---+---+")
+    print("         |   |   |   |   |   |")
+    print("         +---+---+---+---+---+")
+
+    
 
 
 def analyzeGuess(guess):
@@ -124,10 +139,19 @@ def analyzeGuess(guess):
     for i in range(0, len(guess)):
         if guess_list[i][0] is secret_word[i]:
             guess_list[i][1] = "###+"
+            curr = (guess_list[i][0]).capitalize()
+            keyboard[guess_list[i][0]] = "[{}]".format(curr)
             
         check_index = guess.find(secret_word[i])
         if check_index > -1 and guess_list[check_index][1] == "---+":
             guess_list[check_index][1] = "===+"
+            
+            curr = (guess_list[check_index][0]).capitalize()
+            keyboard[guess_list[check_index][0]] = "[{}]".format(curr)
+
+    for i in range(0, len(guess)):
+        if guess_list[i][1] == "---+":
+            keyboard[guess_list[i][0]] = "[ ]"
             
     storeGuesses(guess_list)
 
@@ -139,13 +163,23 @@ def gameOver():
 
     guesses.clear()
     currentGuesses = 0
-    replay = input("Play again? y/n ")
+    replay = input("\nPlay again? y/n ")
     if replay == "y":
-        playAgain = True
+        return True
     else:
-        print("Thanks for playing!")
+        print("\nThanks for playing!")
 
 
 def clearConsole():
     print("\n" * 45)  
-    
+
+def reset():
+    currentGuesses = 0
+    secret_word = getWord()
+    keyboard = {'q':'[q]', 'w':'[w]', 'e':'[e]', 'r':'[r]', 't':'[t]',
+            'y':'[y]', 'u':'[u]', 'i':'[i]', 'o':'[o]', 'p':'[p]',
+            '2':'', 'a':'[a]', 's':'[s]', 'd':'[d]', 'f':'[f]',
+            'g':'[g]','h':'[h]', 'j':'[j]', 'k':'[k]', 'l':'[l]',
+            '3':'  ', 'z':'[z]', 'x':'[x]', 'c':'[c]', 'v':'[v]',
+            'b':'[b]', 'n':'[n]','m':'[m]'}
+
