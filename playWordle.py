@@ -1,34 +1,38 @@
+# CS232 Spring 2022 Assignment #N
+# Sarah Jimenez
+# Last modified: May 2, 2022
+
+
 import wordle as w
 
-
+# playWordle: upon running this file, the player
+# types playWordle() to begin a round. The game
+# plays for one round. A future version will include
+# the option to replay as many times as the user chooses
 
 def playWordle():
-    currentGuesses = 0
-    secret_word = w.getWord()
+    
     gameWon = False
     
-    while (currentGuesses < 6 and not gameWon):
-        
-        guess = input("Guess a word: ")
+    while(w.currentGuesses < 6 and not gameWon):
+        w.showWindow()
+        guess = input("\n\t   Guess a word: ")
 
         while(w.isGuessValid(guess) is not True):
+            w.showWindow()
             print(w.isGuessValid(guess))
-            guess = input("Guess a word: ")
+            guess = input("\n\t   Guess a word: ")
 
-        w.clearConsole()
-            
         w.analyzeGuess(guess)
-        w.displayGrid()
         gameWon = w.isCorrectGuess(guess)
 
-        currentGuesses +=1
-        
+        w.currentGuesses += 1
+
+    w.showWindow()        
         
     if gameWon:
-        print("You win!")
+        print("\nYou win!")
     else:
-        print("Sorry, the answer was: ", w.secret_word)
+        print("\nSorry, the answer was: ", w.secret_word)
 
-    w.gameOver()
-    if w.playAgain:
-        playWordle()
+
